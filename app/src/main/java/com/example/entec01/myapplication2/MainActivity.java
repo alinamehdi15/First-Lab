@@ -1,5 +1,6 @@
 package com.example.entec01.myapplication2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,6 +14,7 @@ import android.util.Log;
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
+    private int score = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,17 +22,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //Explicit intent
+        final Intent intent = new Intent (this, Main2Activity.class);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(intent);
             }
         });
 
         Log.d(TAG, "In the onCreate method");
+        if (savedInstanceState != null) {
+            score = savedInstanceState.getInt("Score");
+            Log.d(TAG, "In the onCreate method, restoring the saved state: score = " +score);
+        }
     }
 
     @Override
@@ -83,5 +90,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "In the onDestroy method");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("Score", score);
+        Log.d(TAG, "In the onStateInstanceState method");
+        super.onSaveInstanceState(outState);
     }
 }
